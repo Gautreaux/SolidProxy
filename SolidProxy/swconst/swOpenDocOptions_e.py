@@ -2,7 +2,7 @@ from enum import IntEnum, unique
 
 @unique
 class swOpenDocOptions_e(IntEnum):
-    """How to open documents using"""
+    """How to open documents using ISldWorks::OpenDoc6. Bitmask."""
 
     swOpenDocOptions_AdvancedConfig = 8192
     swOpenDocOptions_AutoMissingConfig = 32
@@ -19,6 +19,8 @@ class swOpenDocOptions_e(IntEnum):
     swOpenDocOptions_SpeedPak = 4096
     swOpenDocOptions_ViewOnly = 4
 
+    swOpenDocOptions_NotSet = 0
+
     def what(self) -> str:
         return {
             8192 : "Open assemblyusing anadvanced configuration",
@@ -34,5 +36,6 @@ class swOpenDocOptions_e(IntEnum):
             2 : "Open document read only",
             1 : "Open document silently",
             4096 : "Open document using the SpeedPak option",
-            4 : "Open document in Large Design Review mode only (assemblies only)"
+            4 : "Open document in Large Design Review mode only (assemblies only)",
+            0 : "No bit flag was set"
         }[self.value]

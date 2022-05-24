@@ -37,4 +37,4 @@ class IModelDoc2:
         True if this document is read-only, false if not
         """
 
-        return self.com_inst.IsOpenedReadOnly()
+        return self.com_inst.IsOpenedReadOnly
