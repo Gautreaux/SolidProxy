@@ -1,5 +1,7 @@
 # SolidProxy
 
+> I wanted the name `PYSW` but that already exists on `pip`. Very open to new name suggestions.
+
 > Note: to benefit from this code you will need to acquire your own instance of SolidWorks. It was (very lightly) tested on SolidWorks Student Edition 2021-2022. Of course, SolidWorks (and thus this software) is Windows only.
 
 # Motivation
