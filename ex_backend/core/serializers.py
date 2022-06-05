@@ -1,12 +1,7 @@
 
 
 from rest_framework import serializers
-from .models import Notes, SWModel
-
-class NoteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Notes
-        fields = ('id', 'title', 'content')
+from .models import SWModel
 
 class SWModelSerializer(serializers.ModelSerializer):
     class Meta:
