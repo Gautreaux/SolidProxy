@@ -43,6 +43,7 @@ The files are laid out as follows:
   * `bootstrap.py` - a file with functions for bootstrapping the program, namely `GetOrStartSWInst`. This will connect to a running instance or start one (without an interface).
 * `TestFiles/` - a small handful of SolidWorks `.sldprt` files to demonstrate the functionality.
 * `ex_test_*.py`- roughly test cases, but not integrated with any testing frame work. Demonstrate minimum functionality and thats about it.  
+* `ex_backend/` - contains an example Django React REST webapp for displaying SolidWorks data in the web-browser. More detail is in `ex_backend/README.md`
 
 # Future Work
 
