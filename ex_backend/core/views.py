@@ -13,18 +13,22 @@ def front(request):
     return render(request, "index.html", context)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 def get_all_models(request):
 
-    m = SWModel.objects.all()
-    serializer = SWModelSerializer(m, many=True)
-    return Response(serializer.data)
+    if request.method == "GET":
+        m = SWModel.objects.all()
+        serializer = SWModelSerializer(m, many=True)
+        return Response(serializer.data)
+    elif request.method == "DELETE":
+        SWModel.objects.all().delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET'])
 def get_models_hash(request):
     """Get the model hash to determine if open models have changed"""
-    m = SWModel.objects.values_list('title', flat=True)
+    m = map(lambda x: x.my_hash(), SWModel.objects.all())
     h = hash(tuple(m))
     print(f'\thash: {h}')
     return Response(data={'h': h})

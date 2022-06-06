@@ -6,5 +6,10 @@ from .models import SWModel
 class SWModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = SWModel
-        fields = ('title',)
+        fields = (
+            'title',
+            'filetype',
+            'bodycount',
+            'facecount',
+        )
     

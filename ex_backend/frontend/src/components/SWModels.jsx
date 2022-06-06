@@ -3,6 +3,11 @@ import axios from "axios";
 
 import SWModel from "./SWModel"
 
+const wrapperStyles = {
+    width: "100%",
+    display: "flex",
+    flexWrap: 'wrap',
+}
 
 function SWModels(props) {
 
@@ -32,9 +37,9 @@ function SWModels(props) {
     function _r(){
         // console.log(swmodels);
         if (swmodels && swmodels.length > 0) {
-            return <div>
+            return <div style={wrapperStyles}>
                 {swmodels.map(swmodel => <SWModel
-                    title={swmodel.title}
+                    model={swmodel}
                     key={swmodel.title}
                 />)}
             </div>
@@ -43,10 +48,26 @@ function SWModels(props) {
         }
     }
 
+    function resetModels(){
+        axios({
+            method:"DELETE",
+            url:"/swmodels/",
+        }).catch((error) => {
+            if (error.response){
+                console.log(error.response);
+                console.log(error.response.status);
+                console.log(error.response.headers);    
+            }
+        })
+    }
+
     console.log("Rendering for hash value: " + h)
 
     return <div>
-        <div>h value: {props.h}</div>
+        <h1>Currently Open Models:</h1>
+        <sub>h value: {props.h}</sub><br></br>
+        <button onClick={() => {resetModels()}}>Reset</button>
+        <hr></hr>
         {_r()}
         </div>
 }

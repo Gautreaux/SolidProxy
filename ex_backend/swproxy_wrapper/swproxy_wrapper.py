@@ -6,6 +6,10 @@ import itertools
 import pythoncom
 
 from SolidProxy.bootstrap import GetOrStartSWInst
+from SolidProxy.sldworks.IModelDoc2 import IModelDoc2
+from SolidProxy.sldworks.IPartDoc import IPartDoc
+from SolidProxy.swconst.swDocumentTypes_e import swDocumentTypes_e
+from SolidProxy.swconst.swBodyType_e import swBodyType_e
 from core.models import SWModel
 
 _HEARTBEAT_INTERVAL_S = 10
@@ -37,6 +41,43 @@ def _add_known_model(t: str) -> None:
     m = SWModel(title=t)
     m.save()
 
+@sync_to_async
+def _add_model_fields(
+    title:str,
+    filetype: swDocumentTypes_e,
+    bodycount: int = -1,
+    facecount: int = -1,
+) -> None:
+    m, _ = SWModel.objects.get_or_create(title=title)
+    
+    m.filetype = filetype.value
+    m.bodycount = bodycount
+    m.facecount = facecount
+    m.save()
+
+async def _populateFields_part(doc: IPartDoc, title: str) -> None:
+
+    bodies = doc.GetBodies2(swBodyType_e.swAllBodies, False)
+    facecount = sum(map(lambda x: x.GetFaceCount(), bodies))
+
+    await _add_model_fields(
+        title, 
+        swDocumentTypes_e.swDocPART, 
+        len(bodies), 
+        facecount,
+    )
+
+
+async def _populateFields(doc: IModelDoc2, title: str) -> None:
+    filetype = doc.GetType()
+
+    if filetype != swDocumentTypes_e.swDocPART:
+        await _add_model_fields(title, filetype)
+        return
+
+    await _populateFields_part(IPartDoc(doc.com_inst), title)
+
+
 async def pollOpenFiles():
     """Poll and maintain a list of opened files,
         in reality we probably want to interface with some events/callbacks
@@ -62,6 +103,12 @@ async def pollOpenFiles():
 
         for c in new_docs:
             await _add_known_model(c)
+
+        for d in open_docs:
+            t = d.GetTitle()
+            if t in new_docs:
+                asyncio.get_event_loop().create_task(_populateFields(d, t))
+
 
 async def main_aio():
     print("A Main")
