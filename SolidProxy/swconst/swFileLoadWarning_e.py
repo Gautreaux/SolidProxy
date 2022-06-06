@@ -2,7 +2,7 @@ from enum import IntEnum, unique
 
 @unique
 class swFileLoadWarning_e(IntEnum):
-    """File load warnings for"""
+    """File load warnings for ISldWorks::OpenDoc6. Bitmask."""
 
     swFileLoadWarning_AlreadyOpen = 128
     swFileLoadWarning_AutomaticRepair = 262144
