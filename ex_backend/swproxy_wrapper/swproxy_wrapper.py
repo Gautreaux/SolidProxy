@@ -47,12 +47,14 @@ def _add_model_fields(
     filetype: swDocumentTypes_e,
     bodycount: int = -1,
     facecount: int = -1,
+    rebuild_error: int = False,
 ) -> None:
     m, _ = SWModel.objects.get_or_create(title=title)
     
     m.filetype = filetype.value
     m.bodycount = bodycount
     m.facecount = facecount
+    m.rebuild_error = rebuild_error
     m.save()
 
 async def _populateFields_part(doc: IPartDoc, title: str) -> None:
@@ -60,11 +62,18 @@ async def _populateFields_part(doc: IPartDoc, title: str) -> None:
     bodies = doc.GetBodies2(swBodyType_e.swAllBodies, False)
     facecount = sum(map(lambda x: x.GetFaceCount(), bodies))
 
+    fm = doc.FeatureManager()
+    fs = fm.FeatureStatistics()
+    features = fs.Features()
+
+    has_rebuild_error = any(map(lambda x: x.GetErrorCode2()[0] != 0 , features))
+
     await _add_model_fields(
         title, 
         swDocumentTypes_e.swDocPART, 
         len(bodies), 
         facecount,
+        has_rebuild_error,
     )
 
 

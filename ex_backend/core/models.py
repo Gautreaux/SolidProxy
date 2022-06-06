@@ -25,10 +25,13 @@ class SWModel(models.Model):
     facecount = models.IntegerField(
         default=-1,
     )
+    rebuild_error = models.BooleanField(
+        default=False,
+    )
 
     def __str__(self) -> str:
         return self.title
 
     def my_hash(self) -> int:
-        return hash((self.title, self.filetype, self.bodycount, self.facecount))
+        return hash((self.title, self.filetype, self.bodycount, self.facecount, self.rebuild_error))
     

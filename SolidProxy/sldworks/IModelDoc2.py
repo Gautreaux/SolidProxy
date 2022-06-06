@@ -1,4 +1,5 @@
 
+from .IFeatureManager import IFeatureManager
 from .IModelDocExtension import IModelDocExtension
 from ..swconst.swDocumentTypes_e import swDocumentTypes_e
 
@@ -11,6 +12,10 @@ class IModelDoc2:
     def Extension(self) -> IModelDocExtension:
         """Gets the IModelDocExtension object, which also allows access to the model document."""
         return IModelDocExtension(self.com_inst.Extension)
+
+    def FeatureManager(self) -> IFeatureManager:
+        """Gets the IFeatureManager object, which allows access to the FeatureManager design tree."""
+        return IFeatureManager(self.com_inst.FeatureManager)
 
     def GetType(self) -> swDocumentTypes_e:
         "Gets the type of the document"

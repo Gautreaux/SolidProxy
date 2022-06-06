@@ -11,5 +11,6 @@ class SWModelSerializer(serializers.ModelSerializer):
             'filetype',
             'bodycount',
             'facecount',
+            'rebuild_error',
         )
     
